@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Searching with Visual Scholar...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo-container {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .scanner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #818cf8, transparent);
+      animation: scan 1.5s infinite linear;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a5b4fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .progress-bar {
+      width: 180px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #3b82f6);
+      border-radius: 2px;
+      animation: progress 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.6)); }
+    }
+    @keyframes scan {
+      0% { top: 0; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    @keyframes progress {
+      0% { margin-left: -50%; width: 30%; }
+      50% { margin-left: 25%; width: 50%; }
+      100% { margin-left: 100%; width: 30%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <img src="icons/icon128.png" alt="Logo" class="logo">
+      <div class="scanner"></div>
+    </div>
+    <h1 class="title">Visual Scholar</h1>
+    <p class="subtitle" id="status-text">Preparing screenshot for search...</p>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+  
+  <!-- Dynamic form to submit -->
+  <form id="upload-form" method="POST" enctype="multipart/form-data" style="display: none;"></form>
+
+  <script src="search.js"></script>
+</body>
+</html>

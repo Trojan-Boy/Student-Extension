@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Scholar - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="vs-popup-container">
+    
+    <!-- Mini Header -->
+    <header class="vs-header">
+      <div class="vs-brand">
+        <h1 class="vs-title">Visual Scholar</h1>
+        <p class="vs-subtitle">Dashboard</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="vs-main">
+      
+      <!-- Minimalist Capture Triggers Row -->
+      <section class="vs-section">
+        <h2 class="vs-section-title">Screen Capture</h2>
+        <div class="vs-capture-row">
+          <button class="vs-action-card" id="btn-split-view" title="Split view search sideways">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H5V5h6v12zm8 0h-6V5h6v12z"/>
+            </svg>
+            <span>Split View</span>
+          </button>
+          
+          <button class="vs-action-card" id="btn-new-tab" title="Search in new tab">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path fill="currentColor" d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+            </svg>
+            <span>New Tab</span>
+          </button>
+          
+          <button class="vs-action-card" id="btn-reading-pane" title="Search in reading page">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span>Reading</span>
+          </button>
+        </div>
+
+        <!-- PDF Canvas Trigger -->
+        <button class="vs-action-card featured" id="btn-pdf-canvas" title="Open Study Canvas PDF Editor" style="border-color: rgba(59, 130, 246, 0.2); margin-top: 6px; width: 100%; flex-direction: row; justify-content: center; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" style="color: var(--accent-blue);">
+            <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14H6v-2h4v2zm3-4H6v-2h7v2zm3-4H6V7h10v2zm2 10h-3v-3h3v3zm0-5h-3v-3h3v3zm0-5h-3V5h3v3z"/>
+          </svg>
+          <span style="font-weight: 600;">Open PDF Canvas Editor</span>
+        </button>
+      </section>
+
+      <!-- Minimalist Engine Selector -->
+      <section class="vs-section">
+        <h2 class="vs-section-title">Search Engine</h2>
+        <div class="vs-engine-row">
+          <button class="vs-engine-pill active" data-engine="google-lens">Lens</button>
+          <button class="vs-engine-pill" data-engine="bing">Bing</button>
+          <button class="vs-engine-pill" data-engine="yandex">Yandex</button>
+          <button class="vs-engine-pill" data-engine="tineye">TinEye</button>
+        </div>
+      </section>
+
+      <!-- Forced Dark Mode Selector -->
+      <section class="vs-section">
+        <div class="vs-section-header">
+          <h2 class="vs-section-title">Forced Dark Mode</h2>
+          <div class="vs-theme-toggle-container">
+            <button class="vs-theme-pill active" id="btn-theme-off">Off</button>
+            <button class="vs-theme-pill" id="btn-theme-on">On</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Workspaces Section -->
+      <section class="vs-section">
+        <div class="vs-section-header">
+          <h2 class="vs-section-title">Workspaces</h2>
+          <div class="vs-workspace-header-actions">
+            <button class="vs-btn-add" id="btn-add-workspace" title="Create workspace">Create</button>
+            <button class="vs-btn-add" id="btn-add-site" title="Add page to workspace">Add Page</button>
+            <button class="vs-btn-add" id="btn-manage-workspaces" title="Edit workspace links">Manage</button>
+          </div>
+        </div>
+
+        <!-- Saved list -->
+        <div class="vs-workspace-list" id="workspace-list">
+          <!-- Populated by popup.js -->
+        </div>
+
+        <!-- Active browser groups -->
+        <div class="vs-active-groups-section" id="active-groups-section" style="display: none;">
+          <h3 class="vs-section-subtitle">Active Browser Groups</h3>
+          <div class="vs-workspace-list" id="active-groups-list">
+            <!-- Populated by popup.js -->
+          </div>
+        </div>
+
+        <!-- Drawers Form Panels -->
+        <div class="vs-workspace-form" id="workspace-form" style="display: none;">
+          <input type="text" class="vs-form-input" id="ws-name" placeholder="Workspace Name">
+          <textarea class="vs-form-textarea" id="ws-links" rows="2" placeholder="Links (one per line)"></textarea>
+          
+          <div class="vs-form-row">
+            <span class="vs-form-label">Color:</span>
+            <div class="vs-color-grid">
+              <button class="vs-color-pill active" data-color="blue" style="background-color: #3b82f6;"></button>
+              <button class="vs-color-pill" data-color="green" style="background-color: #22c55e;"></button>
+              <button class="vs-color-pill" data-color="purple" style="background-color: #a855f7;"></button>
+              <button class="vs-color-pill" data-color="red" style="background-color: #ef4444;"></button>
+              <button class="vs-color-pill" data-color="yellow" style="background-color: #eab308;"></button>
+              <button class="vs-color-pill" data-color="orange" style="background-color: #f97316;"></button>
+            </div>
+          </div>
+
+          <div class="vs-form-actions">
+            <button class="vs-btn-form-cancel" id="btn-ws-cancel">Cancel</button>
+            <button class="vs-btn-form-save" id="btn-ws-save">Save</button>
+          </div>
+        </div>
+
+        <!-- Add Current Page drawer -->
+        <div class="vs-workspace-form" id="add-site-form" style="display: none;">
+          <span class="vs-form-label" id="add-site-label">Add page to:</span>
+          <div class="vs-add-site-grid" id="add-site-workspace-grid">
+            <!-- Target buttons -->
+          </div>
+          <div class="vs-form-actions">
+            <button class="vs-btn-form-cancel" id="btn-add-site-cancel">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Manage Links drawer -->
+        <div class="vs-workspace-form" id="manage-form" style="display: none;">
+          <div class="vs-form-group">
+            <select class="vs-form-input" id="manage-ws-select">
+              <!-- options populated dynamically -->
+            </select>
+          </div>
+          
+          <div class="vs-manage-links-container" id="manage-links-list">
+            <!-- links list populated dynamically -->
+          </div>
+
+          <div class="vs-form-actions">
+            <button class="vs-btn-form-cancel" id="btn-manage-close">Close</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Element Copier Section -->
+      <section class="vs-section">
+        <div class="vs-section-header">
+          <h2 class="vs-section-title">Element Copier</h2>
+          <div class="vs-copier-options">
+            <button class="vs-format-pill active" data-format="text">Text</button>
+            <span>|</span>
+            <button class="vs-format-pill" data-format="html">HTML</button>
+          </div>
+        </div>
+        
+        <button class="vs-action-card featured" id="btn-copy-picker" title="Inspect page element to copy">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+          </svg>
+          <span>Select & Copy Element</span>
+        </button>
+      </section>
+
+      <!-- History Section -->
+      <section class="vs-section">
+        <div class="vs-section-header">
+          <h2 class="vs-section-title">Recent Captures</h2>
+          <button class="vs-btn-clear" id="btn-clear-history" style="display: none;">Clear</button>
+        </div>
+        
+        <div class="vs-history-list" id="history-list">
+          <div class="vs-empty-state" id="empty-state">
+            <p class="vs-empty-text">No history.</p>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- Footer -->
+    <footer class="vs-footer">
+      <span>Visual Scholar</span>
+    </footer>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

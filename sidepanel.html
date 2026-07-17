@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Visual Scholar - Split View Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0f172a; /* Slate-900 */
+      color: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header & Preview Area */
+    .vs-panel-header {
+      background: #1e293b; /* Slate-800 */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-sizing: border-box;
+      transition: all 0.25s ease;
+    }
+    
+    .vs-panel-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .vs-panel-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .vs-panel-title {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      background: linear-gradient(135deg, #a5b4fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .vs-btn-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      outline: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    
+    .vs-btn-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+    }
+    
+    /* Collapsible Preview Box */
+    .vs-panel-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.15);
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.2s;
+    }
+    
+    .vs-panel-preview.collapsed {
+      display: none;
+    }
+    
+    .vs-preview-thumb {
+      width: 44px;
+      height: 33px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #000000;
+    }
+    
+    .vs-preview-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    
+    .vs-preview-engine {
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    
+    .vs-preview-status {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Search Loading Progress Bar */
+    .vs-panel-progress {
+      height: 2px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .vs-panel-progress.active {
+      display: block;
+    }
+    
+    .vs-panel-progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #6366f1, #3b82f6);
+      animation: side-progress 1.5s infinite ease-in-out;
+    }
+    
+    @keyframes side-progress {
+      0% { left: -30%; width: 20%; }
+      50% { left: 30%; width: 40%; }
+      100% { left: 100%; width: 20%; }
+    }
+    
+    /* Search Results Frame */
+    .vs-frame-container {
+      flex-grow: 1;
+      width: 100%;
+      position: relative;
+      background: #000000;
+    }
+    
+    #search-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidepanel Header -->
+  <div class="vs-panel-header">
+    <div class="vs-panel-top-row">
+      <div class="vs-panel-brand">
+        <h1 class="vs-panel-title">Visual Scholar Search</h1>
+      </div>
+      <button class="vs-btn-toggle" id="btn-toggle-preview">Hide Crop</button>
+    </div>
+    
+    <div class="vs-panel-preview" id="preview-box">
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Preview Image" class="vs-preview-thumb" id="preview-img">
+      <div class="vs-preview-info">
+        <span class="vs-preview-engine" id="preview-engine-text">Google Lens</span>
+        <span class="vs-preview-status" id="preview-status-text">Loading search results...</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading Progress Bar -->
+  <div class="vs-panel-progress" id="progress-bar">
+    <div class="vs-panel-progress-fill"></div>
+  </div>
+  
+  <!-- Search Results Content Frame -->
+  <div class="vs-frame-container">
+    <iframe id="search-frame" name="search-frame" title="Visual Scholar Search Results"></iframe>
+  </div>
+
+  <!-- Hidden Form for POST navigation -->
+  <form id="upload-form" method="POST" enctype="multipart/form-data" target="search-frame" style="display: none;"></form>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Visual Scholar - Reading Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0f172a; /* Slate-900 */
+      color: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Left Control Sidebar */
+    .vs-reading-sidebar {
+      width: 320px;
+      min-width: 320px;
+      height: 100%;
+      background-color: #1e293b; /* Slate-800 */
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      z-index: 10;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .vs-sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .vs-brand-title {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a5b4fc, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .vs-brand-desc {
+      margin: 4px 0 0 0;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .vs-sidebar-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    /* Screenshot Box */
+    .vs-image-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .vs-card-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 0;
+    }
+
+    .vs-image-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #000000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .vs-image-preview {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      max-height: 180px;
+    }
+
+    /* Actions & Metadata */
+    .vs-meta-section {
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 12px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .vs-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    .vs-meta-label {
+      color: #94a3b8;
+    }
+
+    .vs-meta-value {
+      font-weight: 500;
+      color: #f8fafc;
+    }
+
+    .vs-btn-action {
+      background: linear-gradient(135deg, #6366f1, #3b82f6);
+      border: none;
+      outline: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .vs-btn-action:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 6px 15px rgba(99, 102, 241, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .vs-btn-action-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      box-shadow: none;
+    }
+
+    .vs-btn-action-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    /* Right Search Pane */
+    .vs-results-pane {
+      flex-grow: 1;
+      height: 100%;
+      position: relative;
+      background-color: #000000;
+    }
+
+    /* Loading Progress Bar */
+    .vs-reading-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 3px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 100;
+      display: none;
+    }
+
+    .vs-reading-progress.active {
+      display: block;
+    }
+
+    .vs-reading-progress-fill {
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #6366f1, #3b82f6);
+      animation: read-progress 1.5s infinite ease-in-out;
+    }
+
+    @keyframes read-progress {
+      0% { margin-left: -30%; width: 20%; }
+      50% { margin-left: 30%; width: 40%; }
+      100% { margin-left: 100%; width: 20%; }
+    }
+
+    #results-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left Sidebar Panel -->
+  <aside class="vs-reading-sidebar">
+    <div class="vs-sidebar-header">
+      <h1 class="vs-brand-title">Visual Scholar</h1>
+      <p class="vs-brand-desc">Reading & Search View</p>
+    </div>
+    
+    <div class="vs-sidebar-content">
+      
+      <!-- Captured Image -->
+      <div class="vs-image-card">
+        <h2 class="vs-card-title">Screenshot Crop</h2>
+        <div class="vs-image-container">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Crop Image" class="vs-image-preview" id="crop-preview">
+        </div>
+      </div>
+      
+      <!-- Search Information Metadata -->
+      <div class="vs-image-card">
+        <h2 class="vs-card-title">Search Details</h2>
+        <div class="vs-meta-section">
+          <div class="vs-meta-row">
+            <span class="vs-meta-label">Engine:</span>
+            <span class="vs-meta-value" id="meta-engine">Google Lens</span>
+          </div>
+          <div class="vs-meta-row">
+            <span class="vs-meta-label">Status:</span>
+            <span class="vs-meta-value" id="meta-status" style="color: #60a5fa;">Loading...</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar Control Actions -->
+      <div class="vs-image-card" style="margin-top: auto; gap: 8px;">
+        <button class="vs-btn-action" id="btn-download-img" title="Save screenshot to local file">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+          </svg>
+          <span>Save Screenshot</span>
+        </button>
+        
+        <button class="vs-btn-action vs-btn-action-outline" id="btn-new-tab" title="Open search results in full tab">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+          </svg>
+          <span>Open Full Tab</span>
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Right Results Pane -->
+  <main class="vs-results-pane">
+    <div class="vs-reading-progress" id="progress-bar">
+      <div class="vs-reading-progress-fill"></div>
+    </div>
+    <iframe id="results-frame" name="results-frame" title="Search results content pane"></iframe>
+  </main>
+
+  <!-- Form for local POST uploads -->
+  <form id="upload-form" method="POST" enctype="multipart/form-data" target="results-frame" style="display: none;"></form>
+
+  <script src="reading.js"></script>
+</body>
+</html>
