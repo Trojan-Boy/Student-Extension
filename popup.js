@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnAddWorkspace = document.getElementById('btn-add-workspace');
   const btnAddSite = document.getElementById('btn-add-site');
   const btnManageWorkspaces = document.getElementById('btn-manage-workspaces');
+  const btnCloseGroups = document.getElementById('btn-close-groups');
   
   const workspaceList = document.getElementById('workspace-list');
   const workspaceForm = document.getElementById('workspace-form');
@@ -178,6 +179,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnManageClose.addEventListener('click', () => {
     manageForm.style.display = 'none';
+  });
+
+  btnCloseGroups.addEventListener('click', () => {
+    closeAllTabGroups();
   });
 
   manageWsSelect.addEventListener('change', () => {
@@ -671,6 +676,22 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.set({ workspaces: list }, () => {
         loadWorkspaces();
         loadActiveTabGroups();
+      });
+    });
+  }
+
+  function closeAllTabGroups() {
+    if (!chrome.tabGroups) return;
+    chrome.tabGroups.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (groups) => {
+      if (chrome.runtime.lastError || !groups || groups.length === 0) return;
+      
+      groups.forEach(group => {
+        chrome.tabs.query({ groupId: group.id }, (tabs) => {
+          const tabIds = tabs.map(t => t.id);
+          if (tabIds.length > 0) {
+            chrome.tabs.remove(tabIds);
+          }
+        });
       });
     });
   }

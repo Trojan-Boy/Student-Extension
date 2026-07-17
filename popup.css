@@ -689,3 +689,72 @@ body {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.12);
 }
+
+/* Premium Keyframe Animations */
+@keyframes vs-border-pulse-blue {
+  0% { border-color: rgba(59, 130, 246, 0.15); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.08); }
+  50% { border-color: rgba(59, 130, 246, 0.55); box-shadow: 0 0 8px 1px rgba(59, 130, 246, 0.06); }
+  100% { border-color: rgba(59, 130, 246, 0.15); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.08); }
+}
+
+@keyframes vs-border-pulse-emerald {
+  0% { border-color: rgba(16, 185, 129, 0.15); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.08); }
+  50% { border-color: rgba(16, 185, 129, 0.55); box-shadow: 0 0 8px 1px rgba(16, 185, 129, 0.06); }
+  100% { border-color: rgba(16, 185, 129, 0.15); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.08); }
+}
+
+@keyframes vs-lens-focus {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(15deg); filter: brightness(1.25); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes vs-spin-glide {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(1px, -1px) scale(1.15) rotate(180deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes vs-page-flip {
+  0% { transform: scaleX(1); }
+  50% { transform: scaleX(0.6) skewY(-6deg) scale(1.15); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes vs-copy-slide {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-1px, -1.5px) scale(1.15); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Pulsing premium borders on main call-to-actions */
+#btn-split-view {
+  animation: vs-border-pulse-blue 4s infinite ease-in-out;
+}
+#btn-copy-picker {
+  animation: vs-border-pulse-emerald 4s infinite ease-in-out;
+}
+#btn-pdf-canvas {
+  animation: vs-border-pulse-blue 4s infinite ease-in-out;
+}
+
+/* Micro-animations triggered on button hover states */
+#btn-split-view:hover svg {
+  animation: vs-lens-focus 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+#btn-new-tab:hover svg {
+  animation: vs-spin-glide 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+#btn-reading-pane:hover svg {
+  animation: vs-page-flip 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+#btn-copy-picker:hover svg {
+  animation: vs-copy-slide 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+#btn-pdf-canvas:hover svg {
+  animation: vs-lens-focus 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}

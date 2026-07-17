@@ -52,6 +52,8 @@ Launch and organize educational websites inside native, color-coded Chrome Tab G
   - Browse all URLs stored in that group. Click the red **x** cross next to a URL to remove it.
 - **Delete Entire Workspace**:  
   Hover over any workspace pill on the dashboard and click the small red **x** badge in the corner.
+- **Close All Tab Groups**:  
+  Click **Close Groups** in the workspaces section header. All open workspace tab groups in your active Chrome window will close instantly to clean up your tab bar.
 
 ---
 
